@@ -8,17 +8,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Entity
-@Table(name = "tb_postagens")
-
+@Entity //indica ao spring que o objeto abaixo vai ser uma tabela no banco de dados
+@Table(name = "tb_postagens") // indica o nome da tabela (não é obrigatório), sem ela a tabela é criada com o mesmo nome da classe
 public class Postagem {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id //indica que o atributo abaixo será uma chave primária
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // indica que o atributo será auto increment
+	@NotNull
 	private Long id;
 	
 	@NotBlank(message = "O atributo título é obrigatório!")
