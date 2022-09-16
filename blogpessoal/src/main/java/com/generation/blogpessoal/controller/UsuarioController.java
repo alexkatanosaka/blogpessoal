@@ -27,45 +27,43 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    
-    @GetMapping("/all")
-    public ResponseEntity <List<Usuario>> getAll(){     
-        return ResponseEntity.ok(usuarioRepository.findAll());  
-    }
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> getById(@PathVariable Long id) {
-        return usuarioRepository.findById(id)
-            .map(resposta -> ResponseEntity.ok(resposta))
-            .orElse(ResponseEntity.notFound().build());
-    }
-    
-    @PostMapping("/logar")
-    public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
-        return usuarioService.autenticarUsuario(usuarioLogin)
-            .map(resposta -> ResponseEntity.ok(resposta))
-            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-    }
+	@GetMapping("/all")
+	public ResponseEntity<List<Usuario>> getAll() {
+		return ResponseEntity.ok(usuarioRepository.findAll());
+	}
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
+	@GetMapping("/{id}")
+	public ResponseEntity<Usuario> getById(@PathVariable Long id) {
+		return usuarioRepository.findById(id).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.notFound().build());
+	}
 
-        return usuarioService.cadastrarUsuario(usuario)
-            .map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
-            .orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+	@PostMapping("/logar")
+	public ResponseEntity<UsuarioLogin> login(@RequestBody Optional<UsuarioLogin> usuarioLogin) {
+		return usuarioService.autenticarUsuario(usuarioLogin).map(resposta -> ResponseEntity.ok(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+	}
 
-    }
+	@PostMapping("/cadastrar")
+	public ResponseEntity<Usuario> postUsuario(@Valid @RequestBody Usuario usuario) {
 
-    @PutMapping("/atualizar")
-    public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
-        return usuarioService.atualizarUsuario(usuario)
-            .map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
-            .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
+		return usuarioService.cadastrarUsuario(usuario)
+				.map(resposta -> ResponseEntity.status(HttpStatus.CREATED).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.BAD_REQUEST).build());
+
+	}
+
+	@PutMapping("/atualizar")
+	public ResponseEntity<Usuario> putUsuario(@Valid @RequestBody Usuario usuario) {
+		return usuarioService.atualizarUsuario(usuario)
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(resposta))
+				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+	}
 
 }
